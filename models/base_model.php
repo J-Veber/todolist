@@ -1,5 +1,4 @@
 <?php
-include_once '../index.php';
 abstract class BaseModel
 {
     protected $_db;

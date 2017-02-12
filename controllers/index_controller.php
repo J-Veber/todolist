@@ -1,7 +1,7 @@
 <?php
 class Index_Controller extends Base_Controller
 {
-    public $layouts = 'index.php';
+    public $layouts = 'index.blade.php';
 
     function index()
     {
@@ -9,6 +9,6 @@ class Index_Controller extends Base_Controller
         $userInfo = $model->getUser();
         $this->template->vars('userInfo', $userInfo);
 
-        $this->template->view('index.blade');
+        $this->template->view('index');
     }
 }
