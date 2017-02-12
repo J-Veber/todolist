@@ -31,9 +31,9 @@ class Template
     function view($name)
     {
         $pathLayout = SITE_PATH . 'views' . DS .
-            'layouts' . DS . $this->_layouts . 'blade.php';
+            'layouts' . DS . $this->_layouts . '.blade.php';
         $contentPage = SITE_PATH . 'views' . DS . $this->_contoller .
-            DS . $name . 'blade.php';
+            DS . $name . '.blade.php';
 
         if(!file_exists($pathLayout))
         {

@@ -62,7 +62,7 @@ class Router
         {
             $action = 'index';
         }
-        $file = $cmd_path . $controller . '.php';
+        $file = $cmd_path . $controller . '.blade.php';
         $args = $parts;
     }
 
