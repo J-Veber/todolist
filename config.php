@@ -3,7 +3,7 @@
     $sitePath = realpath(dirname(__FILE__) . DS) . DS;
     define('SITE_PATH', $sitePath); //путь к корневой папке сайта
 
-    define('DB_DRIVER', 'PDO_mysql');
+    define('DB_DRIVER', 'pdo_mysql');
     define('DB_USER', 'root');
     define('DB_PASS', 'passw');
     define('DB_HOST', 'localhost');
