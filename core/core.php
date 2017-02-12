@@ -1,7 +1,7 @@
 <?php
     function __autoload($className)
     {
-        $fileName = strtolower($className) . '.blade.php';
+        $fileName = strtolower($className) . '.php';
         $expArr = explode('_', $className);
         if (empty($expArr[1]) OR $expArr[1] == 'Base')
         {

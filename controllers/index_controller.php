@@ -1,7 +1,7 @@
 <?php
 class Index_Controller extends Base_Controller
 {
-    public $layouts = 'index.blade.php';
+    public $layouts = 'index.php';
 
     function index()
     {
