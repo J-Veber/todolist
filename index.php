@@ -19,5 +19,5 @@ $dbParams = array(
 
 $config = Setup::createAnnotationMetadataConfiguration($paths, $isDevMode);
 $entityManager = EntityManager::create($dbParams, $config);
-
+include ('classes/registry.php');
 include (SITE_PATH . DS . 'core' . DS . 'core.php');
