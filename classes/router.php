@@ -1,4 +1,8 @@
 <?php
+
+namespace Classes;
+use duncan3dc\Laravel\BladeInstance;
+
 class Router
 {
     private $registry;
@@ -13,7 +17,7 @@ class Router
     //путь до папки с контроллерами
     function setPath($path)
     {
-        $path = trim($path, '/\\');
+        $path = trim($path, '\\');
         $path .= DS;
         if (is_dir($path) == false)
         {
@@ -22,68 +26,9 @@ class Router
         $this->path = $path;
     }
 
-    private function getController(&$file, &$controller, &$action, &$args)
-    {
-        $route = (empty($_GET['route'])) ? '' : $_GET['route'];
-        unset($_GET['route']);
-        if (empty($route))
-        {
-            $route = 'index';
-        }
-
-        $route = trim($route, '/\\');
-        $parts = explode('/', $route);
-
-        $cmd_path = $this->path;
-        foreach ($parts as $part)
-        {
-            $fullpath = $cmd_path . $part;
-            if (is_dir($fullpath))
-            {
-                $cmd_path .= $part . DS;
-                array_shift($parts);
-                continue;
-            }
-            if (is_file($fullpath . '.blade.php'))
-            {
-                $controller = $part;
-                array_shift($parts);
-                break;
-            }
-        }
-
-        if (empty($controller))
-        {
-            $controller = 'index';
-        }
-
-        $action = array_shift($parts);
-        if (empty($action))
-        {
-            $action = 'index';
-        }
-        $file = $cmd_path . $controller . '.blade.php';
-        $args = $parts;
-    }
-
     function start()
     {
-        $this->getController($file, $controller, $action, $args);
-
-        if (is_readable($file) == false)
-        {
-            die ('404 Not Found');
-        }
-        include ($file);
-
-        $class = 'Controller_' . $controller;
-        $controller = new $class($this->registry);
-
-        if (is_callable(array($controller, $action)) == false)
-        {
-            die ('404 Not Found');
-        }
-
-        $controller->$action();
+        $blade = new BladeInstance(__DIR__ . "/views", __DIR__ . "/views");
+        echo $blade->render("main");
     }
 }
