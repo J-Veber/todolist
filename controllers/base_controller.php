@@ -1,18 +1,18 @@
 <?php
 abstract class Base_Controller
 {
-    protected $registry;
-    protected $template;
-    protected $layouts; //шаблон
+    protected $_registry;
+    protected $_template;
+    protected $_layouts; //шаблон
 
     public $vars = array();
 
     function __construct($registry)
     {
-        $this->registry = $registry;
+        $this->_registry = $registry;
 
-        $this->template = new Template($this->layouts, get_class($this));
+        $this->_template = new Template($this->_layouts, get_class($this));
     }
 
-    abstract function index();
+    abstract function main();
 }
