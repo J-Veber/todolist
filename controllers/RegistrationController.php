@@ -4,6 +4,8 @@ class RegistrationController extends BaseController
 {
     function actionIndex()
     {
+        echo 'In RegistrationController';
+        return true;
         // TODO: Implement actionIndex() method.
     }
 }
