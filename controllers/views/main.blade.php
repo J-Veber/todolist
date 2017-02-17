@@ -7,20 +7,11 @@
 <section class="todoapp">
     <header class="header">
         <h1>todos</h1>
-        <input class="new-todo" placeholder="What needs to be done?" autofocus>
+        @yield('content')
     </header>
 
-    <!-- This section should be hidden by default and shown when there are todos -->
-    //если нет куки
-    @section('login')
-        @show
-    //иначе
-    @section('content')
-        @show
-
-    <!-- This footer should hidden by default and shown when there are todos -->
-
 </section>
+
 <footer class="info">
     <p>Double-click to edit a todo</p>
 </footer>
