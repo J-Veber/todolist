@@ -7,9 +7,7 @@ error_reporting(E_ALL);
 include ('config.php');
 include ('classes/registry.php');
 include ('classes/router.php');
-
 require_once 'vendor/autoload.php';
-
 use Classes\Router;
 use Doctrine\ORM\Tools\Setup;
 use Doctrine\ORM\EntityManager;
@@ -17,11 +15,10 @@ use Doctrine\ORM\EntityManager;
 
 //содеинение с БД
 
-
 (new Router(null))->start();
 die();
 
-$paths = array("/path/to/entity-files");
+/*$paths = array("/path/to/entity-files");
 $isDevMode = false;
 $dbParams = array(
     'driver'   => DB_DRIVER,
@@ -43,7 +40,7 @@ echo SITE_PATH;
 $router->start();
 
 $config = Setup::createAnnotationMetadataConfiguration($paths, $isDevMode);
-$entityManager = EntityManager::create($dbParams, $config);
+$entityManager = EntityManager::create($dbParams, $config);*/
 include ('classes/registry.php');
 include (SITE_PATH . DS . 'core' . DS . 'core.php');
 
