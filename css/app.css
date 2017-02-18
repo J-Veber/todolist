@@ -3,3 +3,23 @@
     padding-top: 6px;
     padding-bottom: 12px;
 }
+
+.button{
+    border: solid 1px #da7c0c;
+    background: #f78d1d;
+    background: -moz-linear-gradient(top,  #faa51a, #f47a20);
+    filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#faa51a', endColorstr='#f47a20');
+    color: #fff;
+    padding: 7px 12px;
+    -webkit-border-radius:4px;
+    /*moz-border-radius:4px;*/
+    border-radius:4px;
+    /*float: right;*/
+    cursor: pointer;
+}
+
+.button:hover{
+    background: #f47c20;
+    background: -moz-linear-gradient(top,  #f88e11, #f06015);
+    filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#f88e11', endColorstr='#f06015');
+}
