@@ -1,23 +1,14 @@
 <?php
 include_once "BaseController.php";
+use duncan3dc\Laravel\BladeInstance;
+
 class ContentController extends BaseController
 {
-    public $_layouts = 'index.php';
-
     function actionIndex()
     {
-        echo 'In ContentController';
-        return true;
-//        $model = new UserModel();
-//        $userInfo = $model->getUser();
-//        $this->_template->vars('userInfo', $userInfo);
-//
-//        $this->_template->view('main');
-    }
-
-    function actionEmptyIndex()
-    {
-        echo 'когда новостей нет';
+        //echo 'In ContentController';
+        $blade = new BladeInstance(__DIR__ . "/views", __DIR__ . "/views");
+        echo $blade->render("content");
         return true;
     }
 
