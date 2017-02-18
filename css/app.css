@@ -1,8 +1,5 @@
-/*
-
-app-template.css overrides
-
-remove this comment if used
-remove this file if not
-
-*/
+.href_area
+{
+    padding-top: 6px;
+    padding-bottom: 12px;
+}
