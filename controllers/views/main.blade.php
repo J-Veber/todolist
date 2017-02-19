@@ -17,6 +17,7 @@
 </footer>
 <!-- Scripts here. Don't remove ↓ -->
 {{--<script src="node_modules/todomvc-common/base.js"></script>--}}
-{{--<script src="js/app.js"></script>--}}
+<script type="text/javascript" src="../../js/jquery-3.1.1.js"></script>
+<script src="../../js/input_hint.js"></script>
 </body>
 </html>
