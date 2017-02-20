@@ -2,7 +2,7 @@
 
 @section('content')
     <div align="center" class="main">
-        <form action="register.php" id="registerform" method="post"name="registerform">
+        <form action="" id="registerform" method="post" name="registerform">
             <p><label for="user_pass">E-mail<br>
                     <input class="input" id="email" name="email" size="20" type="email" value=""></label>
             </p>
@@ -10,7 +10,7 @@
                     <input class="input" id="username" name="username" size="20" type="text" value=""></label>
             </p>
             <p><label for="user_pass">Пароль<br>
-                    <input class="input" id="password" name="password" size="20"   type="password" value=""></label>
+                    <input class="input" id="password" name="password" size="20" type="password" value=""></label>
             </p>
             
             <p class="submit" style="padding-top: 8px"><input class="button" id="register" name= "register" type="submit" value="Зарегистрироваться"></p>
