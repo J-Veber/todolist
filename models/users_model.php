@@ -10,6 +10,11 @@ class Users_Model extends Base_Model
     protected $_user_password;
     protected $_user_email;
 
+    public function create()
+    {
+        echo "i'm here";
+    }
+
     public function fieldsTable()
     {
         return array(
