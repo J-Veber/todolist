@@ -1,24 +1,27 @@
 <?php
-abstract class BaseModel
+namespace baseModel;
+abstract class Base_Model
 {
     protected $_db;
     protected $_table;
     protected $_dataResult;
 
-    public function __construct($select = false)
+    protected function __construct($select = false)
     {
-        global $dbObject;
-        $this->_db = $dbObject;
+        global $db;
+        echo "YO";
+        $this->_db = $db;
 
         $modelName = get_class($this);
         $arrExpr = explode('_', $modelName);
         $tableName = strtolower($arrExpr[1]);
         $this->_table = $tableName;
-
+        echo "tableName" . $tableName . " ;";
         //обработка запроса
         $sql = $this->_getSelect($select);
         if ($sql)
         {
+            echo "i'm in $sql";
             $this->_getResult("SELECT * FROM $this->_table" . $sql);
         }
     }
