@@ -4,7 +4,7 @@
     <div align="center" class="main">
         <form action="reset_password.php" id="registerform" method="post" name="registerform">
             <p><label for="registerform">Введите почтовый ящик или логин: <br>
-                <input class="input" id="input_text" name="text" size="20" type="text" value=""></label>
+                <input id="input_text" name="text" size="20" type="text" value=""></label>
             </p>
 
             <p style="padding-top: 8px">
