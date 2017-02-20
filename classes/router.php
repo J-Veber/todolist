@@ -1,5 +1,4 @@
 <?php
-
 namespace Classes;
 use duncan3dc\Laravel\BladeInstance;
 use Exception;
@@ -12,14 +11,11 @@ class Router
     private $path;
     private $args = array();
     private $routes;
-
-    function __construct($registry)
+    function __construct()
     {
         $routesPath = SITE_PATH.'/routes.php';
         $this->routes = include($routesPath);
-        $this->registry = $registry;
     }
-
     //путь до папки с контроллерами
     function setPath($path)
     {
@@ -30,7 +26,6 @@ class Router
         }
         $this->path = $path;
     }
-
     //returns request string
     private function getURI()
     {
@@ -44,7 +39,6 @@ class Router
         //получить строку маршрута
         $uri = $this->getURI();
         //echo $uri;
-
         //поиск маршрута
         foreach ($this->routes as $uriPattern => $path)
         {
@@ -53,9 +47,7 @@ class Router
                 $segments = explode('/', $path);
                 $controllerName = array_shift($segments) . "Controller";
                 $controllerName = ucfirst($controllerName);
-
                 $actionName = 'action' . ucfirst(array_shift($segments));
-
                 //Подключить файл класса контроллера
                 $controllerFile = SITE_PATH . '/controllers/' .
                     $controllerName . '.php';
@@ -65,7 +57,6 @@ class Router
                 {
                     include_once ($controllerFile);
                 }
-
                 //Создать объект, вызвать метод
                 $controllerObject = new $controllerName;
                 $result = $controllerObject->$actionName();
@@ -75,11 +66,8 @@ class Router
                 }
             }
         }
-
         //$blade = new BladeInstance(__DIR__ . "/views", __DIR__ . "/views");
-
         /*$klein = new Klein();
-
         $klein->with('/user', function () use ($klein) {
             echo "YO";
             $klein->respond('GET', '/main', function ($request, $response) {
@@ -87,7 +75,6 @@ class Router
             });
             $klein->dispatch();
         });*/
-
         /*$blade->share('tasks', [1,2,3]);
         echo $blade->render("content");*/
     }
