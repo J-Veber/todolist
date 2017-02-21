@@ -1,29 +1,17 @@
 <?php
-namespace baseModel;
+
+use DB;
 abstract class Base_Model
 {
-    protected $_db;
     protected $_table;
     protected $_dataResult;
 
-    protected function __construct($select = false)
+    public function __construct()
     {
-        global $db;
-        echo "YO";
-        $this->_db = $db;
-
         $modelName = get_class($this);
         $arrExpr = explode('_', $modelName);
-        $tableName = strtolower($arrExpr[1]);
+        $tableName = strtolower($arrExpr[0]);
         $this->_table = $tableName;
-        echo "tableName" . $tableName . " ;";
-        //обработка запроса
-        $sql = $this->_getSelect($select);
-        if ($sql)
-        {
-            echo "i'm in $sql";
-            $this->_getResult("SELECT * FROM $this->_table" . $sql);
-        }
     }
 
     public function getTableName()
@@ -62,7 +50,8 @@ abstract class Base_Model
         try
         {
             $db = $this->_db;
-            $stmt = $db->query("SELECT * FROM $this->_table WHERE id = $id");
+            $stmt = DB::query("SELECT * FROM $this->_table WHERE id = $id");
+            //$stmt = $db->query("SELECT * FROM $this->_table WHERE id = $id");
             $row = $stmt->fetch();
         } catch (PDOException $e)
         {
@@ -72,38 +61,41 @@ abstract class Base_Model
         return $row;
     }
 
-    public function save()
-    {
-        $arrayAllFields = array_keys($this->fieldsTable());
-        $arraySetField = array();
-        $arrayData = array();
+    abstract function save();
 
-        foreach ($arrayAllFields as $field)
-        {
-            if (!empty($this->$field))
-            {
-                $arraySetField[] = $field;
-                $arrayData[] = $this->$field;
-            }
-        }
-
-        $forQueryFields = implode(', ', $arraySetField);
-        $rangePlace = array_fill(0, count(@$arraySetField), '?');
-        $forQueryPlace = implode(', ', $rangePlace);
-
-        try
-        {
-            $db = $this->_db;
-            $stmt = $db->prepare("INSERT INTO $this->_table($forQueryFields) VALUES ($forQueryPlace)");
-            $result = $stmt->execute($arrayData);
-        } catch(PDOException $e)
-        {
-            echo 'Error : ' . $e->getMessage();
-            echo '<br/>Error sql : ' . "'INSERT INTO $this->_table($forQueryFields) VALUES ($forQueryPlace)'";
-            exit();
-        }
-        return $result;
-    }
+//    {
+//        $arrayAllFields = array_values($this->fieldsTable());
+//        print_r($arrayAllFields);
+//        echo "----------------------\n";
+//        $arraySetField = array();
+//        $arrayData = array();
+//
+//        foreach ($arrayAllFields as $field)
+//        {
+//            if (!empty($field))
+//            {
+//                $arraySetField[] = $field;
+//                $arrayData[] = $field;
+//            }
+//        }
+//
+//        $forQueryFields = implode(', ', $arraySetField);
+//        //$rangePlace = implode(', ', );
+//        //$rangePlace = array_fill(0, count($arraySetField), '?');
+//        $forQueryPlace = implode(', ', $this->arrFieldsValue());
+//
+//        try
+//        {
+//            $stmt = DB::query("INSERT INTO $this->_table ($forQueryFields) VALUES ($forQueryPlace);");
+//            $result = $stmt->execute($arrayData);
+//        } catch(PDOException $e)
+//        {
+//            echo 'Error : ' . $e->getMessage();
+//            echo '<br/>Error sql : ' . "'INSERT INTO $this->_table($forQueryFields) VALUES ($forQueryPlace)'";
+//            exit();
+//        }
+//        return $result;
+//    }
 
     //составление запроса к БД
     private function _getSelect($select)
@@ -275,4 +267,7 @@ abstract class Base_Model
         }
         return $result;
     }
+
+    abstract function fieldsTable();
+    abstract function arrFieldsValue();
 }
