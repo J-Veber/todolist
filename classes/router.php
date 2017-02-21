@@ -66,16 +66,5 @@ class Router
                 }
             }
         }
-        //$blade = new BladeInstance(__DIR__ . "/views", __DIR__ . "/views");
-        /*$klein = new Klein();
-        $klein->with('/user', function () use ($klein) {
-            echo "YO";
-            $klein->respond('GET', '/main', function ($request, $response) {
-                var_dump(1);
-            });
-            $klein->dispatch();
-        });*/
-        /*$blade->share('tasks', [1,2,3]);
-        echo $blade->render("content");*/
     }
 }
