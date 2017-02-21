@@ -1,9 +1,13 @@
-var button = document.querySelector("#login");
+function loginUser() {
+    var button = document.querySelector("#login");
+    button.addEventListener("click", once());
+}
+
 function once() {
 //                    alert("YP");
     $.post(
-        "ЭТА ШТУКА ОБРАБАТЫВАЕТ ЭТУ ФОРМУ .php",
-        { user_log: "submit"}
+        "../controllers/AuthorizationController.php",
+        //"ЭТА ШТУКА ОБРАБАТЫВАЕТ ЭТУ ФОРМУ .php",
+        {login: "submit"}
     );
 }
-button.addEventListener("click", once);
