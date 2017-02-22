@@ -5,7 +5,7 @@ function loginUser() {
 
 function once() {
 //                    alert("YP");
-    $.post(
+    $.get(
         "../controllers/AuthorizationController.php",
         //"ЭТА ШТУКА ОБРАБАТЫВАЕТ ЭТУ ФОРМУ .php",
         {login: "submit"}
