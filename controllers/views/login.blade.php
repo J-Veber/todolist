@@ -1,5 +1,11 @@
 @extends('main')
 
+@section('session')
+    <?php
+    session_start();
+    ?>
+    @endsection
+
 @section('content')
     <div align="center"
          class="main">
