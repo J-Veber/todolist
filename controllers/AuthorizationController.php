@@ -1,13 +1,20 @@
 <?php
+
+namespace Controllers;
+
 include_once "BaseController.php";
+use BaseController;
 use duncan3dc\Laravel\BladeInstance;
 use \Delight\Auth;
+use Klein\Request;
+use Klein\Response;
 
-class AuthorizationController extends BaseController
+class AuthorizationController
 {
     function actionIndex()
     {
-        echo "YO";
+        //return "YA";
+        $this->view();
 //        if (isset($_POST['submit']))
 //        {
 //            $auth = new \Delight\Auth\Auth(DB::class);
