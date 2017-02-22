@@ -32,7 +32,7 @@ DB::$encoding = 'utf8'; // defaults to latin1 if omitted
 //$users = new Users_Model('4', 'anny', 'azaza', 'kokoko@gmail.com');
 //$users->save();
 //echo $users->getRowById('1');
-(new Router())->start();
+Router::start();
 //echo "YO";
 //$row = $mdb->queryFirstRow("SELECT name, email FROM users");
 //echo "Name: " . $row['name'] . "\n" . "E-mail: " . $row['email'] . "\n"; // will be Joe, obviously
