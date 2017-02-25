@@ -9,7 +9,7 @@
 
             <p><label for="registerform">Введите почтовый ящик: <br>
                 <input id="input_text"
-                       name="text"
+                       name="input_text"
                        size="20"
                        type="text"
                        value=""></label>
@@ -17,8 +17,8 @@
 
             <p style="padding-top: 8px">
                 <input class="button"
-                       id="reset"
-                       name= "reset"
+                       id="reset_btn"
+                       name= "reset_btn"
                        type="submit"
                        value="Восстановить пароль"
                        onclick="resetUserPassw()">

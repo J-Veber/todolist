@@ -33,8 +33,8 @@
             
             <p class="submit" style="padding-top: 8px">
                 <input class="button"
-                       id="reg"
-                       name= "reg"
+                       id="reg_btn"
+                       name= "reg_btn"
                        type="submit"
                        value="Зарегистрироваться"
                        onclick="regUser()">

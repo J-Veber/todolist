@@ -36,8 +36,8 @@
 
             <p class="submit">
                 <input class="button"
-                       id="login"
-                       name="login"
+                       id="login_btn"
+                       name="login_btn"
                        type= "submit"
                        value="Log In"
                        onclick=loginUser()>
