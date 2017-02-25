@@ -5,6 +5,7 @@
         "nikic/fast-route": "^1.2",
         "klein/klein": "^2.1",
         "delight-im/auth": "^4.2",
-        "bramus/router": "~1.0"
+        "bramus/router": "~1.0",
+        "sergeytsalkov/meekrodb": "*"
     }
 }
