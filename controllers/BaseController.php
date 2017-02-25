@@ -1,4 +1,7 @@
 <?php
+use Klein\Request;
+use Klein\Response;
+
 abstract class BaseController
 {
     protected $_registry;
