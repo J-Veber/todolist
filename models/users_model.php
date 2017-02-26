@@ -9,14 +9,13 @@ class Users_Model extends Base_Model
     protected $_user_email;
 
 
-    public function __construct($id, $name, $passw, $email)
+    public function __construct($name, $passw, $email)
     {
         $modelName = get_class($this);
         $arrExpr = explode('_', $modelName);
         $tableName = strtolower($arrExpr[0]);
         $this->_table = $tableName;
 
-        $this->_user_id = $id;
         $this->_user_name = $name;
         $this->_user_password = $passw;
         $this->_user_email = $email;
@@ -30,7 +29,6 @@ class Users_Model extends Base_Model
         try
         {
             DB::insert($this->_table, array(
-                'id' => $this->_user_id,
                 'name' => $this->_user_name,
                 'password' => md5(md5(trim($this->_user_password))),
                 'email' => $this->_user_email
@@ -85,15 +83,28 @@ class Users_Model extends Base_Model
         }
     }
 
-    public function findByLoginAndPassw($login, $passw)
+    public function findByEmailAndPassw()
     {
         try
         {
-            $mysqli_result = DB::query("SELECT * FROM $this->_table WHERE $login=%s" , $login, "$passw=%s", md5(md5($passw)));
+            $mysqli_result = DB::query("SELECT * FROM $this->_table WHERE password=%s", sha1($this->_user_password), "email=%s" , $this->_user_email);
             return $mysqli_result;
         } catch (MeekroDBException $e)
         {
-            return 'Error : ' . $e->getMessage() . "<br/>Error sql : " . "FIND user WHERE login = $login and passw = $passw";
+            return 'Error : ' . $e->getMessage() . "<br/>Error sql : " .
+                "FIND user WHERE password = " . sha1($this->_user_password) . "and email = $this->_user_email";
+        }
+    }
+
+    public function findByLoginAndPassw()
+    {
+        try
+        {
+            $mysqli_result = DB::query("SELECT * FROM $this->_table WHERE name=%s" , $this->_user_name, "password=%s", sha1($this->_user_password));
+            return $mysqli_result;
+        } catch (MeekroDBException $e)
+        {
+            return 'Error : ' . $e->getMessage() . "<br/>Error sql : " . "FIND user WHERE name = $this->_user_name and password = " . sha1($this->_user_password);
         }
     }
 
@@ -101,7 +112,7 @@ class Users_Model extends Base_Model
     {
         try
         {
-            $mysqli_result = DB::query("SELECT * FROM $this->_table WHERE $email=%s" , $email);
+            $mysqli_result = DB::query("SELECT * FROM $this->_table WHERE email=%s" , $email);
             return $mysqli_result;
         } catch (MeekroDBException $e)
         {
