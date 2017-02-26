@@ -2,7 +2,7 @@
 
 @section('content')
     <div align="center" class="main">
-        <form action=""
+        <form action="\registration"
               id="registerform"
               method="post"
               name="registerform">
@@ -37,7 +37,8 @@
                        name= "reg_btn"
                        type="submit"
                        value="Зарегистрироваться"
-                       onclick="regUser()">
+                       onclick="regUser()"
+                       >
             </p>
 
             <p class="href_area">
