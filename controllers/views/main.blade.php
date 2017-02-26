@@ -23,8 +23,7 @@
 <footer class="info">
     <p>Double-click to edit a todo</p>
 </footer>
-<script type="text/javascript"
-        src="../../js/jquery-3.1.1.js"></script>
+<script type="text/javascript" src="../../js/jquery-3.1.1.js"></script>
 @yield('scripts')
 </body>
 </html>
