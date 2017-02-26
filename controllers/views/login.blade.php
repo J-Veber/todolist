@@ -9,18 +9,16 @@
 @section('content')
     <div align="center"
          class="main">
-        <form action=""
+        <form action="/authorization"
               id="loginform"
               method="post"
               name="loginform">
-            <p><label for="user_login">Имя пользователя<br>
+            <p><label for="user_email">Почта<br>
                     <input class="input"
-                           id="username"
-                           name="username"
+                           id="user_email"
+                           name="user_email"
                            size="20"
-                           type="text"
-                           value=""
-                           data-help="Логин должен состоять из ...">
+                           type="text">
                 </label>
             </p>
 
@@ -29,8 +27,7 @@
                            id="password"
                            name="password"
                            size="20"
-                           type="password"
-                           value="">
+                           type="password">
                 </label>
             </p>
 
@@ -50,6 +47,10 @@
                 <a href="reset_passw"
                    id="resethref"
                    style="color: #4d4d4d">Напомнить пароль?</a>
+                |
+                <a href="/?action=out"
+                   id="outhref"
+                   style="color: #4d4d4d">Выйти</a>
             </p>
         </form>
     </div>
