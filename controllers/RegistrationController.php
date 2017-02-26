@@ -5,8 +5,9 @@ class RegistrationController extends BaseController
 {
     function actionIndex()
     {
-        //echo 'In RegistrationController';
         $this->view();
+        //echo 'In RegistrationController';
+        $this->callRegContr();
     }
 
     private function view()
@@ -16,7 +17,7 @@ class RegistrationController extends BaseController
         return true;
     }
 
-    private function checkResetContrData()
+    private function checkRegContrData()
     {
         if ($_POST['username'] == "") return false;
         if ($_POST['password'] == "") return false;
@@ -25,8 +26,9 @@ class RegistrationController extends BaseController
         if (!preg_match('/^([a-zA-Z0-9])(\w|-|_)+([a-z0-9])$/is', $_POST['username'])) return false;
         if (strlen($_POST['password']) < 6) return false;
         $login = $_POST['username'];
-        $rez = Users_Model::class->findByLoginAndPassw($login, $_POST['password']);
-        if (@mysql_num_rows($rez) != 0) return false;
+        $usr =  new Users_Model($login, $_POST['password'], '');
+        $rez = $usr->findByLoginAndPassw();
+        if (count($rez) != 0) return false;
         return true;
     }
 
@@ -44,15 +46,15 @@ class RegistrationController extends BaseController
         {
             if (isset($_POST['reg_btn']))
             {
-                $correct = $this->checkResetContrData();
+                $correct = $this->checkRegContrData();
                 if ($correct)
                 {
                     $login = htmlspecialchars($_POST['username']);
-                    $password = md5(md5($_POST['password']));
+                    $password = sha1($_POST['password']);
                     $email = htmlspecialchars($_POST['email']);
 
-                    include_once ('../models/users_model.php');
-                    $user = new Users_Model('', $login, $password, $email);
+                    //include ('../models/users_model.php');
+                    $user = new Users_Model($login, $password, $email);
                     if ($user->save())
                     {
                         setcookie("username", $login, time() + 50000, '/');
@@ -71,7 +73,7 @@ class RegistrationController extends BaseController
                 }
             } else
             {
-                $this->view();
+                //$this->view();
             }
         }
         return true;
