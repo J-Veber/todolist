@@ -14,4 +14,10 @@ abstract class BaseController
         //$this->_template = new Template($this->_layouts, get_class($this));
     }
     abstract function actionIndex();
+
+    protected function savetocookie($email, $password)
+    {
+        setcookie("email", $email, time() + 50000, '/');
+        setcookie("password", $password, time() + 50000, '/');
+    }
 }
