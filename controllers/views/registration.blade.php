@@ -45,6 +45,10 @@
                 Уже зарегистрированы?
                 <a href= "authorization"
                    style="color: #4d4d4d">Войти!</a>
+                |
+                <a href=""
+                   id="outhref"
+                   style="color: #4d4d4d">Выйти</a>
             </p>
         </form>
     </div>
