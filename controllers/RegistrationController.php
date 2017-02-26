@@ -53,12 +53,10 @@ class RegistrationController extends BaseController
                     $password = sha1($_POST['password']);
                     $email = htmlspecialchars($_POST['email']);
 
-                    //include ('../models/users_model.php');
                     $user = new Users_Model($login, $password, $email);
                     if ($user->save())
                     {
-                        setcookie("username", $login, time() + 50000, '/');
-                        setcookie("password", $password, time() + 50000, '/');
+                        $this->savetocookie($email, $password);
                         $rez = $user->findByEmail($email);
                         $row = mysqli_fetch_assoc($rez);
                         $_SESSION['id'] = $row['id'];
