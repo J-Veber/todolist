@@ -10,6 +10,7 @@ var req = false;
 if (window.XMLHttpRequest) req = new XMLHttpRequest();
     else if (window.ActiveXObject) req = new ActiveXObject("Microsoft.XMLHTTP");
 
+//----------------------- REGISTRATION -----------------------------------------------
 function regUser() {
     var button = document.querySelector("#reg_btn");
     button.addEventListener("click", isValidForm());
@@ -111,4 +112,44 @@ function checkPassword() {
 function checkEmail() {
     if (!email.error && !/^([a-z0-9])(\w|[.]|-|_)+([a-z0-9])@([a-z0-9])([a-z0-9.-]*)([a-z0-9])([.]{1})([a-z]{2,4})$/i.test(email.value))
         notValidField(email, badMail);
+}
+
+//---------------- RESET PASSWORD -----------------------------------
+function resetUserPassw() {
+    var button = document.querySelector("#reset");
+    button.addEventListener("click", callRegController());
+}
+
+function callRegController() {
+    $.post(
+        "../controllers/ResetController.php",
+        //"ЭТА ШТУКА ОБРАБАТЫВАЕТ ЭТУ ФОРМУ .php",
+        {reset: "submit"}
+    );
+}
+// ------------------- LOGIN USER -----------------------------------
+function loginUser() {
+    var button = document.querySelector("#login_btn");
+    button.addEventListener("click", checkData());
+}
+
+function checkData() {
+    var elements = document.getElementById('loginform').elements,
+        passw = document.getElementById('password'),
+        email = document.getElementById('email'),
+        valid = true;
+
+    for (var i = 0; i < elements.length; ++i)
+    {
+        if (elements[i].error) valid = false;
+        if ((elements[i].type == 'text' || elements[i].type == 'password') && isEmptyStr(elements[i].value))
+        {
+            notValidField(elements[i], emptyfield);
+            elements[i].type = 'text';
+        }
+    }
+    checkPassword();
+    checkEmail();
+    console.log(valid);
+    return valid;
 }
