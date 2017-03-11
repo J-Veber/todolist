@@ -4,7 +4,6 @@ use DB;
 require_once 'vendor/autoload.php';
 include ('meekrodb.2.3.class.php');
 
-
 $port = '8000';
 
 DB::$user = DB_USER;

@@ -55,7 +55,6 @@ function notValidField(field, str) {
         if (field.id == 'password') field.type = 'password';
         if (field.error) field.value = '';
     }
-
     field.onblur = function () {
         if (isEmptyStr(field.value))
         {
@@ -87,7 +86,7 @@ function checkUsername() {
         if (!username.error)
         {
             req.open('GET', '../controllers/RegistrationController.php?isset_login='
-            + encodeURIComponent(username.value), false);
+                + encodeURIComponent(username.value), false);
             console.log('../controllers/RegistrationController.php?isset_login='
                 + encodeURIComponent(username.value));
             if (req.readyState == 4 && req.status == 200)
