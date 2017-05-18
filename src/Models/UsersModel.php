@@ -1,8 +1,7 @@
 <?php
 namespace TodoList\Models;
 
-use DB;
-use MeekroDBException;
+use PDOException;
 
 class Users_Model extends Base_Model
 {
@@ -10,35 +9,73 @@ class Users_Model extends Base_Model
     protected $_user_name;
     protected $_user_password;
     protected $_user_email;
+    protected $_db;
+    protected $_app;
 
-
-    public function __construct($id, $name, $passw, $email)
+    public function __construct($inputApp)
     {
-        $modelName = get_class($this);
-        $arrExpr = explode('_', $modelName);
-        $tableName = strtolower($arrExpr[0]);
-        $this->_table = $tableName;
+        $this->_user_id = "";
+        $this->_user_name = "";
+        $this->_user_password = "";
+        $this->_user_email = "";
+        //$this->_app = $inputApp;
+        $this->_db = $inputApp->getService('PDO');
+    }
 
-        $this->_user_id = $id;
+    public function setParams($name, $passw, $email)
+    {
         $this->_user_name = $name;
-        $this->_user_password = $passw;
+        $this->_user_password = sha1($passw);
         $this->_user_email = $email;
+    }
+
+    public function setName($name)
+    {
+        $this->_user_name = $name;
+    }
+
+    public function setPassword($passw)
+    {
+        $this->_user_password = $passw;
+    }
+
+    public function setEmail($email)
+    {
+        $this->_user_email = $email;
+    }
+
+    public function getUserId()
+    {
+        return $this->_user_id;
+    }
+
+    public function getUserName()
+    {
+        return $this->_user_name;
+    }
+
+    public function getUserPassword()
+    {
+        return $this->_user_password;
+    }
+
+    public function getUserEmail()
+    {
+        $this->_user_email;
     }
 
     public function save()
     {
         try
         {
-            DB::insert($this->_table, array(
-                'id' => $this->_user_id,
-                'name' => $this->_user_name,
-                'password' => md5(md5(trim($this->_user_password))),
-                'email' => $this->_user_email
-            ));
-        } catch(MeekroDBException $e)
+            $stmt = $this->_db->prepare("INSERT INTO user (user_name, user_passw, user_email) VALUES (:username, :password, :email);");
+            $stmt->execute(array('username' => $this->_user_name,
+                'password' => $this->_user_password,
+                'email' => $this->_user_email));
+        } catch(PDOException $e)
         {
             echo 'Error : ' . $e->getMessage();
-            echo '<br/>Error sql : ' . "'INSERT INTO $this->_table (id, name, passw, email) VALUES (*some values)'";
+            //echo '<br/>Error sql : ' . "'INSERT INTO $this->_table (id, name, passw, email) VALUES (*some values)'";
             exit();
         }
     }
@@ -72,17 +109,27 @@ class Users_Model extends Base_Model
         }
     }
 
-    public function findById($id)
+
+    /*
+     * @return true - we can save new user
+     * @return false - create msg
+     */
+    public function findByLogin()
     {
         try
         {
-            $mysqli_result = DB::query("SELECT * FROM $this->_table WHERE id=%i" , $id);
-            return $mysqli_result;
-        } catch (MeekroDBException $e)
+            $stmt = $this->_db->prepare('SELECT * FROM user WHERE user_name=?;');
+            $stmt->execute(array($this->_user_name));
+            if ($stmt->rowCount() == 0)
+            {
+                return true;
+            } else
+            {
+                return false;
+            }
+        } catch (PDOException $e)
         {
             echo 'Error : ' . $e->getMessage();
-            echo '<br/>Error sql : ' . "FIND user WHERE id = $id";
-            exit();
         }
     }
 
@@ -94,10 +141,10 @@ class Users_Model extends Base_Model
     public function fieldsTable()
     {
         return array(
-            "_user_id" => "id",
-            '_user_login' => 'name',
-            '_user_email' => 'email',
-            '_user_password' => 'password'
+            "_user_id" => "user_id",
+            '_user_login' => 'user_name',
+            '_user_email' => 'user_email',
+            '_user_password' => 'user_passw'
         );
     }
 
@@ -106,30 +153,5 @@ class Users_Model extends Base_Model
         return array(
             $this->_user_id, $this->_user_name, $this->_user_password, $this->_user_email
         );
-    }
-
-    public function getUserId()
-    {
-        return $this->_user_id;
-    }
-
-    public function getUserName()
-    {
-        return $this->_user_name;
-    }
-
-    public function getUserPassword()
-    {
-        return $this->_user_password;
-    }
-
-    public function getUserEmail()
-    {
-        $this->_user_email;
-    }
-
-    public function setUserPassword($passw)
-    {
-        $this->_user_password = $passw;
     }
 }
