@@ -8,7 +8,8 @@ abstract class Base_Model
 {
     protected $_table;
     protected $_dataResult;
-
+    protected $_app;
+    protected $_db;
 
     public function __construct($inputApp)
     {
@@ -16,7 +17,9 @@ abstract class Base_Model
         $arrExpr = explode('_', $modelName);
         $tableName = strtolower($arrExpr[0]);
         $this->_table = $tableName;
+        $this->_app = $inputApp;
 
+        $this->_db = $this->_app->getService('PDO');
     }
 
     public function getTableName()
@@ -237,5 +240,4 @@ abstract class Base_Model
     }
 
     abstract function fieldsTable();
-    abstract function arrFieldsValue();
 }
