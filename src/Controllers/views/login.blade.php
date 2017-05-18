@@ -4,6 +4,7 @@
     @endsection
 
 @section('content')
+    <h1>todos</h1>
     <div align="center" class="main">
         <form id="loginForm" method="post" name="loginForm">
 

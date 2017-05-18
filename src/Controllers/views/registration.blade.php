@@ -1,6 +1,7 @@
 @extends('main')
 
 @section('content')
+    <h1>todos</h1>
     <div align="center" class="main">
         <form action="" id="registerform" method="post" name="registerform">
 
@@ -12,7 +13,7 @@
             
             <p class="submit" style="padding-top: 8px"><input class="button" id="reg" name= "reg" type="submit" value="Зарегистрироваться"></p>
 
-            <p class="href_area"> Уже зарегистрированы? <a href= "login.blade.php" style="color: #4d4d4d">Войти!</a></p>
+            <p class="href_area"> Уже зарегистрированы? <a href= "/login" style="color: #4d4d4d">Войти!</a></p>
         </form>
     </div>
 
