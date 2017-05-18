@@ -12,35 +12,26 @@ class AuthController
     function actionLogin($inputApp)
     {
         $blade = $inputApp->getService('blade');
-        //$blade = new BladeInstance(__DIR__ . "/views", __DIR__ . "/views");
         echo $blade->render("login");
+    }
+
+    function actionLoginResponse($inputApp)
+    {
 
         if (isset($_POST['submit']))
         {
-            $user = new Users_Model($inputApp);
-
-        }
-        /*if (isset($_POST['submit']))
-        {
-            $auth = $inputApp->getService['auth'];
-            //$auth = new Auth(DB::useDB());
-            try
+            $newUsers = new Users_Model($inputApp);
+            $newUsers->setParams($_POST['username'], $_POST['password'], "");
+            if ($newUsers->trylogin())
             {
-                //$md5passw = md5(md5($_POST['password']));
-
-                $auth->login($_POST['login'], $_POST['password'], null);
-                echo "SUCCSESS";
-            } catch (InvalidEmailException $e)
+                //redirect into content page
+                echo "true";
+            } else
             {
-                echo "wrong email address";
-            } catch (InvalidPasswordException $e)
-            {
-                echo "wrong password";
-            } catch (TooManyRequestsException $e)
-            {
-                echo "too many requests";
+                //user does not exist
+                echo "false";
             }
-        }*/
+        }
     }
 
 
@@ -56,12 +47,8 @@ class AuthController
                 echo "true";
             } else
             {
-                //TODO:: create ERROR msg
-                //echo "Пользователь с таким логином уже существует";
                 echo "false";
             }
-        } else {
-
         }
     }
 
