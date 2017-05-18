@@ -6,5 +6,6 @@ return array(
     'registration' => 'auth/registration',
     'login' => 'auth/login',
     'reset_passw' => 'auth/reset',
-    'api/registration' => 'auth/registrationResponse'
+    'api/registration' => 'auth/registrationResponse',
+    'api/login' => 'auth/loginResponse'
 );
