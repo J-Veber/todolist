@@ -22,7 +22,7 @@ class Users_Model extends Base_Model
         $this->_db = $inputApp->getService('PDO');
     }
 
-    public function setParams($name, $passw, $email)
+    public function setParams($name, $passw, $email = null)
     {
         $this->_user_name = $name;
         $this->_user_password = sha1($passw);
@@ -82,37 +82,12 @@ class Users_Model extends Base_Model
 
     public function updatePassw($newpassw)
     {
-        try
-        {
-            DB::update($this->_table,
-                $this->_user_password = $newpassw);
-            return true;
-        } catch (MeekroDBException $e)
-        {
-            echo 'Error : ' . $e->getMessage();
-            echo '<br/>Error sql : ' . "update user password";
-            exit();
-        }
 
     }
-
-    public function deleteById($id)
-    {
-        try
-        {
-            DB::delete($this->_table, "id=%i", $id);
-        } catch (MeekroDBException $e)
-        {
-            echo 'Error : ' . $e->getMessage();
-            echo '<br/>Error sql : ' . "DELETE user WHERE id = $id";
-            exit();
-        }
-    }
-
 
     /*
-     * @return true - we can save new user
-     * @return false - create msg
+     * @return true - this user does not exist
+     * @return false - else
      */
     public function findByLogin()
     {
@@ -133,6 +108,29 @@ class Users_Model extends Base_Model
         }
     }
 
+    /*
+     * @return false - user does not exist
+     * @return true - user can login
+     */
+    public function trylogin()
+    {
+        try
+        {
+            $stmt = $this->_db->prepare('SELECT * FROM user WHERE user_name=? AND user_passw=?;');
+            $stmt->execute(array($this->_user_name, $this->_user_password));
+            if ($stmt->rowCount() == 0)
+            {
+                return false;
+            } else
+            {
+                return true;
+            }
+        } catch (PDOException $e)
+        {
+            echo 'Error : ' . $e->getMessage();
+        }
+    }
+
     public function print()
     {
         return "Name: " . $this->_user_name . ". ";
@@ -145,13 +143,6 @@ class Users_Model extends Base_Model
             '_user_login' => 'user_name',
             '_user_email' => 'user_email',
             '_user_password' => 'user_passw'
-        );
-    }
-
-    public function arrFieldsValue()
-    {
-        return array(
-            $this->_user_id, $this->_user_name, $this->_user_password, $this->_user_email
         );
     }
 }
