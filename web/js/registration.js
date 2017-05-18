@@ -47,9 +47,9 @@ function checkRegister(name, passw, email) {
         text += "логин должен состоять из букв латинского алфавита или цифр; \n";
         res = false;
     }
-    if (name.toString().length < 6 || name.toString().length > 15)
+    if (name.toString().length < 4 || name.toString().length > 13)
     {
-        text += "длина логина не должна быть меньше 6 и больше 15 символов; \n";
+        text += "длина логина не должна быть меньше 4 и больше 13 символов; \n";
         res = false;
     }
     if (parseInt(name.substr(0,1)))
@@ -57,8 +57,8 @@ function checkRegister(name, passw, email) {
         text += "логин не должен начинаться с цифры; \n";
         res = false;
     }
-    if (passw.toString().length < 5 || passw.toString().length > 15) {
-        text += "длина пароля не должна быть меньше 5 и больше 15 символов; \n";
+    if (passw.toString().length < 4 || passw.toString().length > 13) {
+        text += "длина пароля не должна быть меньше 4 и больше 13 символов; \n";
         res = false;
     }
     if (!patternEmail.test(email))
