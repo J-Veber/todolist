@@ -1,8 +1,10 @@
 <?php
 
 return array(
-    'todos' => 'content/index', //render content
-    'registration' => 'registration/index',
-    'login' => 'main/index',
-    'reset_passw' => 'reset/index'
+    '' => 'auth/home',
+    'todos' => 'content/index',
+    'registration' => 'auth/registration',
+    'login' => 'auth/login',
+    'reset_passw' => 'auth/reset',
+    'api/registration' => 'auth/registrationResponse'
 );
