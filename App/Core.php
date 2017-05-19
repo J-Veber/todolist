@@ -1,5 +1,4 @@
 <?php
-use Delight\Auth\Auth;
 use duncan3dc\Laravel\BladeInstance;
 
 class App
@@ -31,11 +30,9 @@ class App
         //echo __DIR__;
         $blade = new BladeInstance(ROOT_PATH . "src/Controllers/views", ROOT_PATH . "src/Controllers/views/cache");
 
-        $auth = new Auth($db);
         $this->services = [
             'PDO' => $db,
-            'blade' => $blade,
-            'auth' => $auth
+            'blade' => $blade
         ];
     }
 
