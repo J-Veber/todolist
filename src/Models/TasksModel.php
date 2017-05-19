@@ -57,7 +57,7 @@ class Tasks_Model extends Base_Model
 
     public function getALLTasks()
     {
-        if (isset($_SESSION['test']))
+        if (isset($_SESSION['username']))
         {
             $stmt = $this->_db->prepare('SELECT * FROM tasks WHERE user_name=?;');
             $stmt->execute(array($_SESSION['username']));
@@ -92,7 +92,7 @@ class Tasks_Model extends Base_Model
         }
     }
 
-    public function updateTask()
+    public function updateTaskDone()
     {
         try
         {
@@ -111,6 +111,19 @@ class Tasks_Model extends Base_Model
         {
             $stmt = $this->_db->prepare('DELETE FROM tasks WHERE task_done = 1;');
             $stmt->execute();
+        } catch(PDOException $e)
+        {
+            echo 'Error : ' . $e->getMessage();
+            exit();
+        }
+    }
+
+    public function updateTaskText()
+    {
+        try
+        {
+            $stmt = $this->_db->prepare('UPDATE tasks SET task_text = :task_text WHERE task_id = :task_id;');
+            $stmt->execute(array('task_text' => $this->_task_text, 'task_id' => $this->_task_id));
         } catch(PDOException $e)
         {
             echo 'Error : ' . $e->getMessage();
