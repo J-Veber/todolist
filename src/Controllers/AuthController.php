@@ -2,13 +2,14 @@
 
 namespace TodoList\Controllers;
 
+use duncan3dc\Laravel\BladeInstance;
 use TodoList\Models\Users_Model;
 
 class AuthController
 {
     function actionLogin($inputApp)
     {
-        if (isset($_SESSION['username']) and isset($_SESSION['password']))
+        if (isset($_SESSION['username']))
         {
             header("Location: /todos");
         } else
@@ -28,7 +29,7 @@ class AuthController
             {
                 //redirect into content page
                 $_SESSION['username'] = $_POST['username'];
-                $_SESSION['password'] = sha1($_POST['password']);
+                //$_SESSION['password'] = sha1($_POST['password']);
                 echo "true";
             } else
             {
@@ -76,4 +77,18 @@ class AuthController
         ]);
     }
 
+    function actionCloseSession($inputApp)
+    {
+        if (isset($_POST['close']))
+        {
+            $_SESSION = array();
+            session_register_shutdown();
+        }
+    }
+
+    function actionError($inputApp)
+    {
+        $blade = new BladeInstance(ROOT_PATH . "src/Controllers/views", ROOT_PATH . "src/Controllers/views/cache");
+        echo $blade->render("404");
+    }
 }

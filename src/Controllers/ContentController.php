@@ -9,17 +9,11 @@ class ContentController
     function actionIndex($inputApp)
     {
 
-        $currentUser = new Tasks_Model($inputApp);
-        $currentUser->setUsername($_SESSION['username']);
-
-        /*$tasksWithSult = $currentUser->getALLTasks();
-        $tasks = array();
-        $counter = 0;
-        foreach ($tasksWithSult as $task)
+        if (isset($_SESSION['username']))
         {
-            $tasks[$counter++] = $task['task_text'];
-        }*/
-//        print_r($tasks);
+            $currentUser = new Tasks_Model($inputApp);
+            $currentUser->setUsername($_SESSION['username']);
+        }
         $blade = $inputApp->getService('blade');
         echo $blade->render("content");
     }
@@ -36,9 +30,12 @@ class ContentController
 
     function actionLoadTasks($inputApp)
     {
-        $currentUser = new Tasks_Model($inputApp);
-        $currentUser->setUsername($_SESSION['username']);
-        echo $currentUser->getALLTasks();
+        if (isset($_SESSION['username']))
+        {
+            $currentUser = new Tasks_Model($inputApp);
+            $currentUser->setUsername($_SESSION['username']);
+            echo $currentUser->getALLTasks();
+        }
     }
 
     function actionRemoveTask($inputApp)
@@ -55,7 +52,7 @@ class ContentController
         $currentUser->setUsername($_SESSION['username']);
         $currentUser->setTaskId($_POST['task_id']);
         $currentUser->setTaskDone($_POST['task_done']);
-        $currentUser->updateTask();
+        $currentUser->updateTaskDone();
     }
 
     function actionRemoveAllCompletedTask($inputApp)
@@ -63,6 +60,15 @@ class ContentController
         $currentUser = new Tasks_Model($inputApp);
         $currentUser->setUsername($_SESSION['username']);
         $currentUser->deleteAllTasks();
+    }
 
+    function actionEditTask($inputApp)
+    {
+        $currentUser = new Tasks_Model($inputApp);
+        $currentUser->setUsername($_SESSION['username']);
+        $currentUser->setTaskId($_POST['task_id']);
+        $currentUser->setTaskText($_POST['task_text']);
+        $currentUser->updateTaskText();
+        echo ($_POST['task_text']);
     }
 }
