@@ -37,8 +37,15 @@ class Router
             $result = $controllerObject->$actionName($this->app);
         } else
         {
-            echo '123';
+            //echo '123';
             //TODO: create error page
+            header('Location: /404');
+            /*$contr = new \TodoList\Controllers\AuthController();
+            $contr->actionError($this->app);*/
+            /*$controllerName = "\\TodoList\\Controllers\\AuthController";
+            $actionName = 'actionError';
+            $controllerObject = new $controllerName;
+            $result = $controllerObject->$actionName($this->app);*/
         }
     }
 }
