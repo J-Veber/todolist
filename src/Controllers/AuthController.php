@@ -2,22 +2,24 @@
 
 namespace TodoList\Controllers;
 
-use Delight\Auth\InvalidEmailException;
-use Delight\Auth\InvalidPasswordException;
-use Delight\Auth\TooManyRequestsException;
 use TodoList\Models\Users_Model;
 
 class AuthController
 {
     function actionLogin($inputApp)
     {
-        $blade = $inputApp->getService('blade');
-        echo $blade->render("login");
+        if (isset($_SESSION['username']) and isset($_SESSION['password']))
+        {
+            header("Location: /todos");
+        } else
+        {
+            $blade = $inputApp->getService('blade');
+            echo $blade->render("login");
+        }
     }
 
     function actionLoginResponse($inputApp)
     {
-
         if (isset($_POST['submit']))
         {
             $newUsers = new Users_Model($inputApp);
@@ -25,6 +27,8 @@ class AuthController
             if ($newUsers->trylogin())
             {
                 //redirect into content page
+                $_SESSION['username'] = $_POST['username'];
+                $_SESSION['password'] = sha1($_POST['password']);
                 echo "true";
             } else
             {
@@ -33,7 +37,6 @@ class AuthController
             }
         }
     }
-
 
     function actionRegistrationResponse($inputApp)
     {
@@ -61,7 +64,6 @@ class AuthController
     function actionReset($inputApp)
     {
         $blade = $inputApp->getService['blade'];
-        //$blade = new BladeInstance(__DIR__ . "/views", __DIR__ . "/views");
         echo $blade->render("reset_password");
     }
 
