@@ -14,6 +14,7 @@ class Users_Model extends Base_Model
 
     public function __construct($inputApp)
     {
+        parent::__construct($inputApp);
         $this->_user_id = "";
         $this->_user_name = "";
         $this->_user_password = "";
