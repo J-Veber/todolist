@@ -33,14 +33,23 @@ $(document).ready(function () {
         $.get(
             'api/todos/removeAllCompletedTask',
             function (data) {
-
             }
         );
         loadAllTasks();
     });
 
+    $('#closeSession').on('click', function () {
+        //console.log('closing session');
+       $.post(
+           'api/todos/closeSession',
+           {
+               close: 'true'
+           }
+       );
+    });
+
     //edit tasks TODO:: correct some mistakes
-    $('.todo-list').on('click', '.edit_task', function () {
+    $('.todo-list').on('dblclick', '.edit_task', function () {
         editingTaskId = event.target.id;
         taskObject = $('#task_' + editingTaskId);
         editing = true;
@@ -49,7 +58,7 @@ $(document).ready(function () {
     });
 
     $(document).mouseup(function (event) {
-        editingTask = $("editing_task_" + editingTaskId);
+        editingTask = $("#editing_task_" + editingTaskId);
         if (!editingTask.is(event.target) && editing)
         {
             taskObject.removeClass("editing");
@@ -57,16 +66,13 @@ $(document).ready(function () {
         }
     });
 
-    $('#newTask').keypress(function (event) {
-        if (event.which == 13)
+    $('document').keypress(function (event) {
+        if (event.which === 13)
         {
-            console.log( "Handler for .keypress() called. on #newTask" );
-
-
             var newTask = $("#newTask").val();
-            if (newTask != "")
+            console.log(newTask);
+            if (newTask !== "")
             {
-                //TODO:: create post request with new task and username
                 $.post(
                     "api/todos/addTask",
                     {
@@ -77,28 +83,28 @@ $(document).ready(function () {
                     }
                 );
                 uncompleteTasksCount++;
+
                 $("#uncompleteTasksCount").text(uncompleteTasksCount);
+
+            } else
+            {
+                if (editingTask) {
+                    editingTask.text(editingTask.val());
+                    $("#" + editingTaskId).text(editingTask.val());
+
+                    $.post(
+                        "api/todos/editTask",
+                        {
+                            task_text: editingTask.val(),
+                            task_id: editingTaskId
+                        },
+                        function(data){
+                            console.log(data.toString());
+                        });
+                }
+                taskObject.removeClass("editing");
             }
         }
-    });
-
-    //edit Task
-    $(document).keypress(function () {
-        if (editingTask) {
-            editingTask.task_text(editingTask.val());
-            $("#" + editingTaskId).text(editingTask.val());
-
-            $.post(
-                "api/todos/editTask",
-                {
-                    task: editingTask.val(),
-                    task_id: editingTaskId
-                },
-                function(data){
-                    console.log(data.toString());
-                });
-        }
-        taskObject.removeClass("editing");
     });
 
     //delete task
@@ -160,22 +166,28 @@ $(document).ready(function () {
         $.get(
             "api/todos/returnAllTasks",
             function (data) {
-                //alert(data);
-                completeCategory = false;
-                tasks = jQuery.parseJSON(data.toString());
-                //alert(tasks);
+                if (data == "")
+                {
+                    $('.footer').empty();
+                } else
+                {
+                    completeCategory = false;
+                    //alert(data);
+                    tasks = jQuery.parseJSON(data.toString());
 
-                uncompleteTasksCount = tasks.filter(function(task){
-                    return task.task_done == false;
-                }).length;
+                    uncompleteTasksCount = tasks.filter(function(task){
+                        return task.task_done == false;
+                    }).length;
 
-                $("#uncompleteTasksCount").text(uncompleteTasksCount);
+                    $("#uncompleteTasksCount").text(uncompleteTasksCount);
 
-                tasks.forEach(function (task) {
-                    //console.log(task);
-                    taskCount = task.task_id;
-                    prependLoadTask(task.task_text, task.task_done, taskCount)
-                });
+                    tasks.forEach(function (task) {
+                        //console.log(task);
+                        taskCount = task.task_id;
+                        prependLoadTask(task.task_text, task.task_done, taskCount)
+                    });
+                }
+
             }
         );
     }
