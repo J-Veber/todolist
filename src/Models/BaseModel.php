@@ -17,9 +17,9 @@ abstract class Base_Model
         $arrExpr = explode('_', $modelName);
         $tableName = strtolower($arrExpr[0]);
         $this->_table = $tableName;
-        $this->_app = $inputApp;
+        //$this->_app = $inputApp;
 
-        $this->_db = $this->_app->getService('PDO');
+        //$this->_db = $this->_app->getService('PDO');
     }
 
     public function getTableName()
