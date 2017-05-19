@@ -7,7 +7,6 @@
     <title>Template • TodoMVC</title>
     <link rel="stylesheet" href="/css/base.css">
     <link rel="stylesheet" href="/css/index.css">
-    <!-- CSS overrides - remove if you don't need it -->
     <link rel="stylesheet" href="/css/app.css">
     @yield('head')
 </head>
