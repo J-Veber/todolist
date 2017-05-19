@@ -6,6 +6,7 @@ return array(
     'registration' => 'auth/registration',
     'login' => 'auth/login',
     'reset_passw' => 'auth/reset',
+    '404' => 'auth/error',
 
     'api/registration' => 'auth/registrationResponse',
 
@@ -16,5 +17,6 @@ return array(
     'api/todos/removeTask' => 'content/removeTask',
     'api/todos/removeAllCompletedTask' => 'content/removeAllCompletedTask',
     'api/todos/toggleComplete' => 'content/toggleCompleteTask',
-    'api/todos/editTask' => 'content/editTask'
+    'api/todos/editTask' => 'content/editTask',
+    'api/todos/closeSession' => 'auth/closeSession'
 );
