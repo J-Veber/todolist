@@ -3,7 +3,7 @@
 <!--если нет записей-->
 
 @section('content')
-    <h1>todos <input class="button" id="close_session" name="close_session" type= "submit" value="Exit"></h1>
+    <h1>todos <a href="/login" id="closeSession" name="close_session">Exit</a></h1>
     <input class="new-todo" id="newTask" placeholder="What needs to be done?" autofocus>
     <section class="main">
         <input class="toggle-all" type="checkbox">
