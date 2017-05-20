@@ -1,7 +1,7 @@
 <?php
     define('DS', DIRECTORY_SEPARATOR);
     $sitePath = realpath(dirname(__FILE__) . DS) . DS;
-    define('SITE_PATH', $sitePath); //путь к корневой папке сайта
+    define('SITE_PATH', $sitePath . "/../"); //путь к корневой папке сайта
     define('ROOT_PATH', '/home/veber/todolist/'); // TODO: сделать чтоб логика смотрела сюда
 
     define('DB_DRIVER', 'pdo_mysql');

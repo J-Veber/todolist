@@ -2,21 +2,73 @@
 
 namespace TodoList\Controllers;
 
-use duncan3dc\Laravel\BladeInstance;
+use TodoList\Models\Tasks_Model;
 
-class ContentController extends BaseController
+class ContentController
 {
-    function actionIndex()
+    function actionIndex($inputApp)
     {
-        header('Content-type: text/html; charset=utf-8;');
-        $inputlogin = $_POST['username'];
-        //$inputpassword = $_POST['password'];
 
-
-
-        //echo 'In ContentController';
-        $blade = new BladeInstance(__DIR__ . "/views", __DIR__ . "/views");
-        echo $blade->render("content", ['content' => $tasks]);
+        if (isset($_SESSION['username']))
+        {
+            $currentUser = new Tasks_Model($inputApp);
+            $currentUser->setUsername($_SESSION['username']);
+        }
+        $blade = $inputApp->getService('blade');
+        echo $blade->render("content");
     }
 
+    function actionAddTask($inputApp)
+    {
+        $currentUser = new Tasks_Model($inputApp);
+        $currentUser->setUsername($_SESSION['username']);
+        $currentUser->setTaskText($_POST['task_text']);
+        //echo $_POST['task_text'];
+         if ($currentUser->save() == 1)
+             echo "true";
+    }
+
+    function actionLoadTasks($inputApp)
+    {
+        if (isset($_SESSION['username']))
+        {
+            $currentUser = new Tasks_Model($inputApp);
+            $currentUser->setUsername($_SESSION['username']);
+            echo $currentUser->getALLTasks();
+        }
+    }
+
+    function actionRemoveTask($inputApp)
+    {
+        $currentUser = new Tasks_Model($inputApp);
+        $currentUser->setUsername($_SESSION['username']);
+        $currentUser->setTaskId($_POST['task_id']);
+        $currentUser->delete();
+    }
+
+    function actionToggleCompleteTask($inputApp)
+    {
+        $currentUser = new Tasks_Model($inputApp);
+        $currentUser->setUsername($_SESSION['username']);
+        $currentUser->setTaskId($_POST['task_id']);
+        $currentUser->setTaskDone($_POST['task_done']);
+        $currentUser->updateTaskDone();
+    }
+
+    function actionRemoveAllCompletedTask($inputApp)
+    {
+        $currentUser = new Tasks_Model($inputApp);
+        $currentUser->setUsername($_SESSION['username']);
+        $currentUser->deleteAllTasks();
+    }
+
+    function actionEditTask($inputApp)
+    {
+        $currentUser = new Tasks_Model($inputApp);
+        $currentUser->setUsername($_SESSION['username']);
+        $currentUser->setTaskId($_POST['task_id']);
+        $currentUser->setTaskText($_POST['task_text']);
+        $currentUser->updateTaskText();
+        echo ($_POST['task_text']);
+    }
 }

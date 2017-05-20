@@ -5,7 +5,6 @@ function resetUserPassw() {
 
 function callRegController() {
     $.post(
-        "../controllers/ResetController.php",
         //"ЭТА ШТУКА ОБРАБАТЫВАЕТ ЭТУ ФОРМУ .php",
         {reset: "submit"}
     );

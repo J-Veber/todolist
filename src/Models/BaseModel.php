@@ -8,13 +8,18 @@ abstract class Base_Model
 {
     protected $_table;
     protected $_dataResult;
+    protected $_app;
+    protected $_db;
 
-    public function __construct()
+    public function __construct($inputApp)
     {
         $modelName = get_class($this);
         $arrExpr = explode('_', $modelName);
         $tableName = strtolower($arrExpr[0]);
         $this->_table = $tableName;
+        //$this->_app = $inputApp;
+
+        //$this->_db = $this->_app->getService('PDO');
     }
 
     public function getTableName()
@@ -53,7 +58,7 @@ abstract class Base_Model
         try
         {
             //$db = $this->_db;
-            $stmt = DB::query("SELECT * FROM $this->_table WHERE id = $id");
+            $stmt = $this->_db::query("SELECT * FROM $this->_table WHERE id = $id");
             $row = $stmt->fetch();
         } catch (PDOException $e)
         {
@@ -64,40 +69,6 @@ abstract class Base_Model
     }
 
     abstract function save();
-
-//    {
-//        $arrayAllFields = array_values($this->fieldsTable());
-//        print_r($arrayAllFields);
-//        echo "----------------------\n";
-//        $arraySetField = array();
-//        $arrayData = array();
-//
-//        foreach ($arrayAllFields as $field)
-//        {
-//            if (!empty($field))
-//            {
-//                $arraySetField[] = $field;
-//                $arrayData[] = $field;
-//            }
-//        }
-//
-//        $forQueryFields = implode(', ', $arraySetField);
-//        //$rangePlace = implode(', ', );
-//        //$rangePlace = array_fill(0, count($arraySetField), '?');
-//        $forQueryPlace = implode(', ', $this->arrFieldsValue());
-//
-//        try
-//        {
-//            $stmt = DB::query("INSERT INTO $this->_table ($forQueryFields) VALUES ($forQueryPlace);");
-//            $result = $stmt->execute($arrayData);
-//        } catch(PDOException $e)
-//        {
-//            echo 'Error : ' . $e->getMessage();
-//            echo '<br/>Error sql : ' . "'INSERT INTO $this->_table($forQueryFields) VALUES ($forQueryPlace)'";
-//            exit();
-//        }
-//        return $result;
-//    }
 
     //составление запроса к БД
     private function _getSelect($select)
@@ -181,8 +152,7 @@ abstract class Base_Model
         $sql = $this->_getSelect($select);
         try
         {
-            $db = $this->_db;
-            $result = $db->exec("DELETE FROM $this->_table " . $sql);
+            $result = $this->_db->exec("DELETE FROM $this->_table " . $sql);
         } catch (PDOException $e)
         {
             echo 'Error : ' . $e->getMessage();
@@ -204,8 +174,7 @@ abstract class Base_Model
         {
             try
             {
-                $db = $this->_db;
-                $result = $db->exec("DELETE FROM $this->_table WHERE 'id' = $this->id");
+                $result = $this->_db->exec("DELETE FROM $this->_table WHERE 'id' = $this->id");
                 foreach ($arrayAllFields as $onefield)
                 {
                     unset($this->$onefield);
@@ -271,5 +240,4 @@ abstract class Base_Model
     }
 
     abstract function fieldsTable();
-    abstract function arrFieldsValue();
 }

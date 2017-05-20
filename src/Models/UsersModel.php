@@ -1,8 +1,7 @@
 <?php
 namespace TodoList\Models;
 
-use DB;
-use MeekroDBException;
+use PDOException;
 
 class Users_Model extends Base_Model
 {
@@ -10,102 +9,40 @@ class Users_Model extends Base_Model
     protected $_user_name;
     protected $_user_password;
     protected $_user_email;
+    protected $_db;
+    protected $_app;
 
-
-    public function __construct($id, $name, $passw, $email)
+    public function __construct($inputApp)
     {
-        $modelName = get_class($this);
-        $arrExpr = explode('_', $modelName);
-        $tableName = strtolower($arrExpr[0]);
-        $this->_table = $tableName;
+        parent::__construct($inputApp);
+        $this->_user_id = "";
+        $this->_user_name = "";
+        $this->_user_password = "";
+        $this->_user_email = "";
+        //$this->_app = $inputApp;
+        $this->_db = $inputApp->getService('PDO');
+    }
 
-        $this->_user_id = $id;
+    public function setParams($name, $passw, $email = null)
+    {
         $this->_user_name = $name;
-        $this->_user_password = $passw;
+        $this->_user_password = sha1($passw);
         $this->_user_email = $email;
     }
 
-    public function save()
+    public function setName($name)
     {
-        try
-        {
-            DB::insert($this->_table, array(
-                'id' => $this->_user_id,
-                'name' => $this->_user_name,
-                'password' => md5(md5(trim($this->_user_password))),
-                'email' => $this->_user_email
-            ));
-        } catch(MeekroDBException $e)
-        {
-            echo 'Error : ' . $e->getMessage();
-            echo '<br/>Error sql : ' . "'INSERT INTO $this->_table (id, name, passw, email) VALUES (*some values)'";
-            exit();
-        }
+        $this->_user_name = $name;
     }
 
-    public function updatePassw($newpassw)
+    public function setPassword($passw)
     {
-        try
-        {
-            DB::update($this->_table,
-                $this->_user_password = $newpassw);
-            return true;
-        } catch (MeekroDBException $e)
-        {
-            echo 'Error : ' . $e->getMessage();
-            echo '<br/>Error sql : ' . "update user password";
-            exit();
-        }
-
+        $this->_user_password = $passw;
     }
 
-    public function deleteById($id)
+    public function setEmail($email)
     {
-        try
-        {
-            DB::delete($this->_table, "id=%i", $id);
-        } catch (MeekroDBException $e)
-        {
-            echo 'Error : ' . $e->getMessage();
-            echo '<br/>Error sql : ' . "DELETE user WHERE id = $id";
-            exit();
-        }
-    }
-
-    public function findById($id)
-    {
-        try
-        {
-            $mysqli_result = DB::query("SELECT * FROM $this->_table WHERE id=%i" , $id);
-            return $mysqli_result;
-        } catch (MeekroDBException $e)
-        {
-            echo 'Error : ' . $e->getMessage();
-            echo '<br/>Error sql : ' . "FIND user WHERE id = $id";
-            exit();
-        }
-    }
-
-    public function print()
-    {
-        return "Name: " . $this->_user_name . ". ";
-    }
-
-    public function fieldsTable()
-    {
-        return array(
-            "_user_id" => "id",
-            '_user_login' => 'name',
-            '_user_email' => 'email',
-            '_user_password' => 'password'
-        );
-    }
-
-    public function arrFieldsValue()
-    {
-        return array(
-            $this->_user_id, $this->_user_name, $this->_user_password, $this->_user_email
-        );
+        $this->_user_email = $email;
     }
 
     public function getUserId()
@@ -128,8 +65,85 @@ class Users_Model extends Base_Model
         $this->_user_email;
     }
 
-    public function setUserPassword($passw)
+    public function save()
     {
-        $this->_user_password = $passw;
+        try
+        {
+            $stmt = $this->_db->prepare("INSERT INTO user (user_name, user_passw, user_email) VALUES (:username, :password, :email);");
+            $stmt->execute(array('username' => $this->_user_name,
+                'password' => $this->_user_password,
+                'email' => $this->_user_email));
+        } catch(PDOException $e)
+        {
+            echo 'Error : ' . $e->getMessage();
+            //echo '<br/>Error sql : ' . "'INSERT INTO $this->_table (id, name, passw, email) VALUES (*some values)'";
+            exit();
+        }
+    }
+
+    public function updatePassw($newpassw)
+    {
+
+    }
+
+    /*
+     * @return true - this user does not exist
+     * @return false - else
+     */
+    public function findByLogin()
+    {
+        try
+        {
+            $stmt = $this->_db->prepare('SELECT * FROM user WHERE user_name=?;');
+            $stmt->execute(array($this->_user_name));
+            if ($stmt->rowCount() == 0)
+            {
+                return true;
+            } else
+            {
+                return false;
+            }
+        } catch (PDOException $e)
+        {
+            echo 'Error : ' . $e->getMessage();
+        }
+    }
+
+    /*
+     * @return false - user does not exist
+     * @return true - user can login
+     */
+    public function trylogin()
+    {
+        try
+        {
+            $stmt = $this->_db->prepare('SELECT * FROM user WHERE user_name=? AND user_passw=?;');
+            $stmt->execute(array($this->_user_name, $this->_user_password));
+            if ($stmt->rowCount() == 0)
+            {
+                return false;
+            } else
+            {
+                return true;
+            }
+        } catch (PDOException $e)
+        {
+            echo 'Error : ' . $e->getMessage();
+        }
+    }
+
+    public function print()
+    {
+        return "Name: " . $this->_user_name . ". ";
+    }
+
+    public function fieldsTable()
+    {
+        return array(
+            "_user_id" => "user_id",
+            '_user_login' => 'user_name',
+            '_user_email' => 'user_email',
+            '_user_password' => 'user_passw'
+        );
     }
 }

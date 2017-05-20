@@ -3,26 +3,17 @@
 
 class Router
 {
-    //private $registry;
     private $path;
-    //private $args = array();
     private $routes;
-    function __construct()
+    private $app;
+
+    function __construct($inputapp)
     {
         $routesPath = SITE_PATH.'/routes.php';
         $this->routes = include($routesPath);
+        $this->app = $inputapp;
     }
-    //путь до папки с контроллерами
-    function setPath($path)
-    {
-        $path = trim($path, '\\');
-        $path .= DS;
-        if (is_dir($path) == false) {
-            throw new Exception ('Invalid controller path: `' . $path . '`');
-        }
-        $this->path = $path;
-    }
-    //returns request string
+
     private function getURI()
     {
         if (!empty($_SERVER['REQUEST_URI']))
@@ -33,35 +24,28 @@ class Router
 
     function start()
     {
-        //получить строку маршрута
-        $uri = $this->getURI();
-        //echo $uri;
-        //поиск маршрута
-        foreach ($this->routes as $uriPattern => $path)
+        //echo '<pre>'.print_r($_POST,true).'</pre>';
+        $uri = parse_url($this->getURI(), PHP_URL_PATH);
+        if (array_key_exists($uri, $this->routes))
         {
-            if (preg_match("~$uriPattern~" , $uri))
-            {
-                $segments = explode('/', $path);
-                $controllerName = array_shift($segments) . "Controller";
-                $controllerName = ucfirst($controllerName);
-                $actionName = 'action' . ucfirst(array_shift($segments));
-                //Подключить файл класса контроллера
-                $controllerFile = SITE_PATH . '/controllers/' .
-                    $controllerName . '.php';
-                //echo "<br>$controllerFile";
-                //echo "<br>$controllerName";
-                if (file_exists($controllerFile))
-                {
-                    include_once ($controllerFile);
-                }
-                //Создать объект, вызвать метод
-                $controllerObject = new $controllerName;
-                $result = $controllerObject->$actionName();
-                if ($result != null)
-                {
-                    break;
-                }
-            }
+            $path = $this->routes[$uri];
+            $segments = explode('/', $path);
+            $controllerName = ucfirst($segments[0]) . "Controller";
+            $controllerName = "\\TodoList\\Controllers\\" . ucfirst($controllerName);
+            $actionName = 'action' . ucfirst($segments[1]);
+            $controllerObject = new $controllerName;
+            $result = $controllerObject->$actionName($this->app);
+        } else
+        {
+            //echo '123';
+            //TODO: create error page
+            header('Location: /404');
+            /*$contr = new \TodoList\Controllers\AuthController();
+            $contr->actionError($this->app);*/
+            /*$controllerName = "\\TodoList\\Controllers\\AuthController";
+            $actionName = 'actionError';
+            $controllerObject = new $controllerName;
+            $result = $controllerObject->$actionName($this->app);*/
         }
     }
 }
