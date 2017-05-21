@@ -3,7 +3,7 @@ namespace TodoList\Models;
 
 use PDOException;
 
-class Tasks_Model extends Base_Model
+class Tasks_Model
 {
     protected $_user_login;
     protected $_task_text;
@@ -14,8 +14,6 @@ class Tasks_Model extends Base_Model
 
     public function __construct($inputApp)
     {
-        parent::__construct($inputApp);
-
         $this->_user_login = "";
         $this->_task_text = "";
         $this->_task_id = "";
