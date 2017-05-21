@@ -24,12 +24,8 @@ class App
             $db = new PDO($dsn, $dbuser, $dbpassw, $opt);
         } catch (PDOException $e)
         {
-            $conn = mysqli_connect($host, $dbuser, $dbpassw);
-            $sqlquery = 'CREATE DATABASE IF NOT EXIST todomvc_db';
-            $conn->query($sqlquery);
-            $conn->close();
-            $db = new PDO($dsn, $dbuser, $dbpassw, $opt);
-            exec("mysql -h$host -u$dbuser -p$dbpassw $dbname < " . "../src/todomvc_db.sql");
+            echo 'Error : Technical error. Please enter later' . '<br>';
+            exit();
         }
         $blade = new BladeInstance(SITE_PATH . "/src/Controllers/views", SITE_PATH . "/src/Controllers/views/cache");
 
