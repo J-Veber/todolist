@@ -13,9 +13,13 @@ class ContentController
         {
             $currentUser = new Tasks_Model($inputApp);
             $currentUser->setUsername($_SESSION['username']);
+            $blade = $inputApp->getService('blade');
+            echo $blade->render("content");
+        } else
+        {
+            header("Location: /login");
         }
-        $blade = $inputApp->getService('blade');
-        echo $blade->render("content");
+
     }
 
     function actionAddTask($inputApp)
@@ -23,8 +27,7 @@ class ContentController
         $currentUser = new Tasks_Model($inputApp);
         $currentUser->setUsername($_SESSION['username']);
         $currentUser->setTaskText($_POST['task_text']);
-        //echo $_POST['task_text'];
-         if ($currentUser->save() == 1)
+        if ($currentUser->save() == 1)
              echo "true";
     }
 

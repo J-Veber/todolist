@@ -27,9 +27,7 @@ class AuthController
             $newUsers->setParams($_POST['username'], $_POST['password'], "");
             if ($newUsers->trylogin())
             {
-                //redirect into content page
                 $_SESSION['username'] = $_POST['username'];
-                //$_SESSION['password'] = sha1($_POST['password']);
                 echo "true";
             } else
             {
@@ -88,7 +86,7 @@ class AuthController
 
     function actionError($inputApp)
     {
-        $blade = new BladeInstance(ROOT_PATH . "src/Controllers/views", ROOT_PATH . "src/Controllers/views/cache");
+        $blade = $inputApp->getService('blade');
         echo $blade->render("404");
     }
 }

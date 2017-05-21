@@ -1,7 +1,7 @@
 <?php
 
 return array(
-    '' => 'auth/home',
+    '' => 'auth/login',
     'todos' => 'content/index',
     'registration' => 'auth/registration',
     'login' => 'auth/login',

@@ -15,6 +15,6 @@
     @endsection
 
 @section('scripts')
-    <script type="text/javascript" src="../../../web/js/reset.js"></script>
+    <script type="text/javascript"></script>
 @endsection
 

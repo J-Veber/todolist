@@ -3,14 +3,13 @@
 
 class Router
 {
-    private $path;
     private $routes;
     private $app;
 
     function __construct($inputapp)
     {
-        $routesPath = SITE_PATH.'/routes.php';
-        $this->routes = include($routesPath);
+        $routesPath = SITE_PATH . '/App/routes.php';
+        $this->routes = include_once($routesPath);
         $this->app = $inputapp;
     }
 
@@ -24,7 +23,6 @@ class Router
 
     function start()
     {
-        //echo '<pre>'.print_r($_POST,true).'</pre>';
         $uri = parse_url($this->getURI(), PHP_URL_PATH);
         if (array_key_exists($uri, $this->routes))
         {
@@ -37,15 +35,8 @@ class Router
             $result = $controllerObject->$actionName($this->app);
         } else
         {
-            //echo '123';
-            //TODO: create error page
-            header('Location: /404');
-            /*$contr = new \TodoList\Controllers\AuthController();
-            $contr->actionError($this->app);*/
-            /*$controllerName = "\\TodoList\\Controllers\\AuthController";
-            $actionName = 'actionError';
-            $controllerObject = new $controllerName;
-            $result = $controllerObject->$actionName($this->app);*/
+            $authController = new \TodoList\Controllers\AuthController();
+            $authController->actionError($this->app);
         }
     }
 }

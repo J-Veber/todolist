@@ -39,7 +39,6 @@ $(document).ready(function () {
     });
 
     $('#closeSession').on('click', function () {
-        //console.log('closing session');
        $.post(
            'api/todos/closeSession',
            {
@@ -48,7 +47,6 @@ $(document).ready(function () {
        );
     });
 
-    //edit tasks TODO:: correct some mistakes
     $('.todo-list').on('dblclick', '.edit_task', function () {
         editingTaskId = event.target.id;
         taskObject = $('#task_' + editingTaskId);
@@ -66,11 +64,10 @@ $(document).ready(function () {
         }
     });
 
-    $('document').keypress(function (event) {
+    $(document).keypress(function (event) {
         if (event.which === 13)
         {
             var newTask = $("#newTask").val();
-            console.log(newTask);
             if (newTask !== "")
             {
                 $.post(
@@ -79,11 +76,13 @@ $(document).ready(function () {
                         task_text: newTask
                     },
                     function (data) {
-                        console.log(data.toString());
+                        //console.log(data.toString());
                     }
                 );
-                uncompleteTasksCount++;
 
+                uncompleteTasksCount++;
+                reloadTasks();
+                $('#newTask').val("");
                 $("#uncompleteTasksCount").text(uncompleteTasksCount);
 
             } else
@@ -99,10 +98,12 @@ $(document).ready(function () {
                             task_id: editingTaskId
                         },
                         function(data){
-                            console.log(data.toString());
+                            //console.log(data.toString());
                         });
                 }
+
                 taskObject.removeClass("editing");
+                reloadTasks();
             }
         }
     });
@@ -120,7 +121,7 @@ $(document).ready(function () {
                 task_id: event.target.id
             },
             function (data) {
-                console.log(data.toString());
+                //console.log(data.toString());
             }
         );
     });
@@ -157,7 +158,7 @@ $(document).ready(function () {
                 task_id: task_id
             },
             function (data) {
-                console.log(data.toString());
+                //console.log(data.toString());
             }
         );
     }
@@ -172,7 +173,6 @@ $(document).ready(function () {
                 } else
                 {
                     completeCategory = false;
-                    //alert(data);
                     tasks = jQuery.parseJSON(data.toString());
 
                     uncompleteTasksCount = tasks.filter(function(task){
@@ -182,7 +182,6 @@ $(document).ready(function () {
                     $("#uncompleteTasksCount").text(uncompleteTasksCount);
 
                     tasks.forEach(function (task) {
-                        //console.log(task);
                         taskCount = task.task_id;
                         prependLoadTask(task.task_text, task.task_done, taskCount)
                     });
@@ -237,5 +236,10 @@ $(document).ready(function () {
     function toggleSelect(currentState) {
         $(".state").removeClass('selected');
         $(currentState).addClass('selected');
+    }
+
+    function reloadTasks() {
+        $(".todo-list").empty();
+        loadAllTasks();
     }
 });

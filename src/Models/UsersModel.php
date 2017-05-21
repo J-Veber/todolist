@@ -3,7 +3,7 @@ namespace TodoList\Models;
 
 use PDOException;
 
-class Users_Model extends Base_Model
+class Users_Model
 {
     protected $_user_id;
     protected $_user_name;
@@ -14,12 +14,11 @@ class Users_Model extends Base_Model
 
     public function __construct($inputApp)
     {
-        parent::__construct($inputApp);
         $this->_user_id = "";
         $this->_user_name = "";
         $this->_user_password = "";
         $this->_user_email = "";
-        //$this->_app = $inputApp;
+        $this->_app = $inputApp;
         $this->_db = $inputApp->getService('PDO');
     }
 
@@ -76,7 +75,6 @@ class Users_Model extends Base_Model
         } catch(PDOException $e)
         {
             echo 'Error : ' . $e->getMessage();
-            //echo '<br/>Error sql : ' . "'INSERT INTO $this->_table (id, name, passw, email) VALUES (*some values)'";
             exit();
         }
     }
@@ -94,7 +92,7 @@ class Users_Model extends Base_Model
     {
         try
         {
-            $stmt = $this->_db->prepare('SELECT * FROM user WHERE user_name=?;');
+            $stmt = $this->_db->prepare("SELECT * FROM user WHERE user_name=?;");
             $stmt->execute(array($this->_user_name));
             if ($stmt->rowCount() == 0)
             {
@@ -122,9 +120,9 @@ class Users_Model extends Base_Model
             if ($stmt->rowCount() == 0)
             {
                 return false;
-            } else
+            } else if ($stmt->rowCount() >= 0)
             {
-                return true;
+                return true; //we find our user
             }
         } catch (PDOException $e)
         {

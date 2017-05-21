@@ -31,7 +31,7 @@ function onAjaxResponse(data)
             .css({'padding' : '0.8em', 'margin-bottom' : '1em', 'background' : '#e6efc2', 'color' : '#264409', 'border' : '2px #c6d880', 'display' : 'block'});
     } else
     {
-        $('#regResult').text("Пользователь с таким логином уже существует")
+        $('#regResult').text("Пользователь с таким именем уже существует")
             .css({'background' : '#fbe3e4','color' : '#8a1f11', 'padding' : '0.8em', 'margin-bottom' : '1em', 'border' : '2px #fbc2c4'});
     }
 
@@ -42,19 +42,19 @@ function checkRegister(name, passw, email) {
     var text = "";
     var patternLogin = /^(?=.{4,14})[a-z][a-z0-9]*[._-]?[a-z0-9]+$/;
     var patternEmail = /^([a-z0-9_-]+\.)*[a-z0-9_-]+@[a-z0-9_-]+(\.[a-z0-9_-]+)*\.[a-z]{2,6}$/;
-    if (!patternLogin.test(name))
+    if (!patternLogin.test(name.toLowerCase()))
     {
-        text += "логин должен состоять из букв латинского алфавита или цифр; \n";
+        text += "логин должно состоять из букв латинского алфавита или цифр; \n";
         res = false;
     }
-    if (name.toString().length < 4 || name.toString().length > 13)
+    if (name.toString().length < 4 || name.toString().length > 12)
     {
-        text += "длина логина не должна быть меньше 4 и больше 13 символов; \n";
+        text += "длина логина не должна быть меньше 4 и больше 12 символов; \n";
         res = false;
     }
     if (parseInt(name.substr(0,1)))
     {
-        text += "логин не должен начинаться с цифры; \n";
+        text += "имя не должно начинаться с цифры; \n";
         res = false;
     }
     if (passw.toString().length < 4 || passw.toString().length > 13) {

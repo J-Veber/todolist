@@ -24,16 +24,16 @@ class App
             $db = new PDO($dsn, $dbuser, $dbpassw, $opt);
         } catch (PDOException $e)
         {
-            //print "Error!: " . $e->getMessage() . "<br/>";
-            die('Подключение не удалось: ' . $e->getMessage());
+            echo 'Error : Technical error. Please enter later' . '<br>';
+            exit();
         }
-        //echo __DIR__;
-        $blade = new BladeInstance(ROOT_PATH . "src/Controllers/views", ROOT_PATH . "src/Controllers/views/cache");
+        $blade = new BladeInstance(SITE_PATH . "/src/Controllers/views", SITE_PATH . "/src/Controllers/views/cache");
 
         $this->services = [
             'PDO' => $db,
             'blade' => $blade
         ];
+
     }
 
     public function getService($alias)

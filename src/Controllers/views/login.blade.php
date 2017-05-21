@@ -15,7 +15,7 @@
             <p><label for="user_pass">Пароль<br> <input class="input" id="password" name="password" size="20" type="password" value=""></label></p>
 
             <p class="submit"> <input class="button" id="login" name="login" type= "submit" value="Log In"></p>
-            <p class="href_area"> <a href="/registration" id = "reghref" style="color: #4d4d4d">Регистрация</a> | <a href="reset_password.blade.php" id="resethref" style="color: #4d4d4d">Напомнить пароль?</a></p>
+            <p class="href_area"> <a href="/registration" id = "reghref" style="color: #4d4d4d">Регистрация</a> | <a  id="resethref" style="color: #4d4d4d">Напомнить пароль?</a></p>
         </form>
     </div>
 @endsection
