@@ -24,16 +24,20 @@ class App
             $db = new PDO($dsn, $dbuser, $dbpassw, $opt);
         } catch (PDOException $e)
         {
-            //print "Error!: " . $e->getMessage() . "<br/>";
-            die('Подключение не удалось: ' . $e->getMessage());
+            $conn = mysqli_connect($host, $dbuser, $dbpassw);
+            $sqlquery = 'CREATE DATABASE IF NOT EXIST todomvc_db';
+            $conn->query($sqlquery);
+            $conn->close();
+            $db = new PDO($dsn, $dbuser, $dbpassw, $opt);
+            exec("mysql -h$host -u$dbuser -p$dbpassw $dbname < " . "../src/todomvc_db.sql");
         }
-        //echo __DIR__;
-        $blade = new BladeInstance(ROOT_PATH . "src/Controllers/views", ROOT_PATH . "src/Controllers/views/cache");
+        $blade = new BladeInstance(SITE_PATH . "/src/Controllers/views", SITE_PATH . "/src/Controllers/views/cache");
 
         $this->services = [
             'PDO' => $db,
             'blade' => $blade
         ];
+
     }
 
     public function getService($alias)
